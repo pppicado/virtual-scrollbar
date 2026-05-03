@@ -1,0 +1,23 @@
+{
+  "name": "@pppicado/virtual-scrollbar",
+  "version": "0.1.0",
+  "description": "Virtual scrollbar Angular component with drag support via Angular CDK",
+  "author": "Pedro Pablo Picado Sánchez",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^16.2.0",
+    "@angular/core": "^16.2.0",
+    "@angular/cdk": "^16.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "keywords": [
+    "angular",
+    "scrollbar",
+    "virtual-scrollbar",
+    "drag",
+    "cdk"
+  ],
+  "sideEffects": false
+}

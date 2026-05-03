@@ -1,0 +1,21 @@
+<div class="scrollbar-wrapper">
+    <div class="scroll-content" #scrollContainer>
+        <ng-content></ng-content>
+    </div>
+
+    <!-- Vertical Thumb -->
+    <div class="scroll-thumb scroll-thumb-vertical" *ngIf="showVertical" cdkDrag [cdkDragLockAxis]="'y'"
+        [cdkDragBoundary]="'.scrollbar-wrapper'" [cdkDragFreeDragPosition]="verticalThumbPos"
+        (cdkDragStarted)="onVerticalDragStart($event)" (cdkDragEnded)="onVerticalDragEnd($event)"
+        (cdkDragMoved)="onVerticalDragMoved($event)" [style.width]="thumbSizeStyle" [style.height]="thumbSizeStyle">
+        <div class="thumb-default"><img *ngIf="scrollIcon" [src]="scrollIcon" class="thumb-icon"></div>
+    </div>
+
+    <!-- Horizontal Thumb -->
+    <div class="scroll-thumb scroll-thumb-horizontal" *ngIf="showHorizontal" cdkDrag [cdkDragLockAxis]="'x'"
+        [cdkDragBoundary]="'.scrollbar-wrapper'" [cdkDragFreeDragPosition]="horizontalThumbPos"
+        (cdkDragStarted)="onHorizontalDragStart($event)" (cdkDragEnded)="onHorizontalDragEnd($event)"
+        (cdkDragMoved)="onHorizontalDragMoved($event)" [style.width]="thumbSizeStyle" [style.height]="thumbSizeStyle">
+        <div class="thumb-default"><img *ngIf="scrollIcon" [src]="scrollIcon" class="thumb-icon"></div>
+    </div>
+</div>
