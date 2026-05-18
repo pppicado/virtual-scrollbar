@@ -1,7 +1,7 @@
 {
   "name": "@pppicado/virtual-scrollbar",
   "version": "0.1.0",
-    "description": "Virtual scrollbar Angular component with drag support via Angular CDK / Componente Angular de scrollbar virtual con soporte de arrastre mediante Angular CDK",
+    "description": "Virtual scrollbar Angular component with drag support via Angular CDK",
   "author": "Pedro Pablo Picado Sánchez",
   "license": "MIT",
   "peerDependencies": {
