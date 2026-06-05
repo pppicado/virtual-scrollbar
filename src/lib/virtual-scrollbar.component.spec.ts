@@ -170,6 +170,16 @@ describe('VirtualScrollbarComponent', () => {
 
         beforeEach(() => {
             fixture.detectChanges();
+            // Drag handlers read el = this.scrollContainer.nativeElement.
+            // @ViewChild is not auto-initialized in TestBed without a
+            // surrounding template, so we inject a mock.
+            (component as any).scrollContainer = {
+                nativeElement: {
+                    scrollHeight: 1000, clientHeight: 200,
+                    scrollWidth: 200, clientWidth: 200,
+                    scrollTop: 0, scrollLeft: 0
+                }
+            } as ElementRef<HTMLDivElement>;
             mockSource = {
                 getFreeDragPosition: jasmine.createSpy('getFreeDragPosition')
             };
