@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild, AfterViewInit, OnDestroy, Renderer2, HostListener, ChangeDetectorRef } from '@angular/core';
-import { CdkDragMove, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
+import type { CdkDragMove, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'lib-virtual-scrollbar',
@@ -8,7 +8,7 @@ import { CdkDragMove, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
 })
 export class VirtualScrollbarComponent implements AfterViewInit, OnDestroy {
     @Input() scrollIcon: string = '';
-    @Input() scrollThumbSize: number = 2;
+    @Input() scrollThumbSize: string = '2vw';
 
 
     @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
@@ -52,13 +52,36 @@ export class VirtualScrollbarComponent implements AfterViewInit, OnDestroy {
     }
 
     get thumbSizeStyle() {
-        return `${this.scrollThumbSize / 2}vw`;
+        return this.scrollThumbSize;
+    }
+
+    private parseThumbSize(): number {
+        const match = this.scrollThumbSize.match(/^(\d+(?:\.\d+)?)(px|vw|vh|%|rem|em)?$/i);
+        if (!match) return 20;
+        
+        const value = parseFloat(match[1]);
+        const unit = match[2]?.toLowerCase() || 'px';
+        
+        switch (unit) {
+            case 'vw':
+                return (value * window.innerWidth) / 100;
+            case 'vh':
+                return (value * window.innerHeight) / 100;
+            case 'rem':
+                return value * parseFloat(getComputedStyle(document.documentElement).fontSize);
+            case 'em':
+                return value * parseFloat(getComputedStyle(this.scrollContainer.nativeElement).fontSize);
+            case '%':
+                return (value * this.scrollContainer.nativeElement.clientHeight) / 100;
+            case 'px':
+            default:
+                return value;
+        }
     }
 
     onContentScroll() {
         const el = this.scrollContainer.nativeElement;
-        const thumbSizeVw = this.scrollThumbSize;
-        const thumbSizePx = (thumbSizeVw * window.innerWidth) / 100;
+        const thumbSizePx = this.parseThumbSize();
 
         // Vertical Scrollbar
         const scrollHeight = el.scrollHeight;
@@ -101,8 +124,7 @@ export class VirtualScrollbarComponent implements AfterViewInit, OnDestroy {
 
     onVerticalDragMoved(event: CdkDragMove) {
         const el = this.scrollContainer.nativeElement;
-        const thumbSizeVw = this.scrollThumbSize;
-        const thumbSizePx = (thumbSizeVw * window.innerWidth) / 100;
+        const thumbSizePx = this.parseThumbSize();
 
         const currentPos = event.source.getFreeDragPosition();
         const maxThumbTop = el.clientHeight - thumbSizePx;
@@ -125,8 +147,7 @@ export class VirtualScrollbarComponent implements AfterViewInit, OnDestroy {
 
     onHorizontalDragMoved(event: CdkDragMove) {
         const el = this.scrollContainer.nativeElement;
-        const thumbSizeVw = this.scrollThumbSize;
-        const thumbSizePx = (thumbSizeVw * window.innerWidth) / 100;
+        const thumbSizePx = this.parseThumbSize();
 
         const currentPos = event.source.getFreeDragPosition();
         const maxThumbLeft = el.clientWidth - thumbSizePx;
